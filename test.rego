@@ -2,18 +2,21 @@ package scepter.satellite
 
 default decision = {
     "permit": false,
+    "code": 403,
     "reason": "Forbidden",
     "resources": set()
 }
 
 decision = {
     "permit": permit_decision,
+    "code": decision_code,
     "reason": reason_msg,
     "resources": accessible_assets
 }
 
-permit_decision = true { asset_in_accessible_assets } 
-permit_decision = false { not asset_in_accessible_assets } 
+decision_code = 200 { asset_in_accessible_assets }
+permit_decision = true { asset_in_accessible_assets }
+permit_decision = false { not asset_in_accessible_assets }
 
 # Rule to check if the assetId exists in accessible_assets
 asset_in_accessible_assets {
