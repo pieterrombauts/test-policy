@@ -17,6 +17,15 @@ publicly_visible_asset_ids[assetId] {
     assetId := asset._id
 }
 
+# Helper rule to provide all assets accessible to a user (merged set of user_readable and publicly visible assets)
+accessible_assets[assetId] {
+    assetId = user_readable_asset_ids[_]
+}
+
+accessible_assets[assetId] {
+    assetId = publicly_visible_asset_ids[_]
+}
+
 # Main rule to allow access if assetId exists either in user_readable_asset_ids 
 # or in publicly_visible_asset_ids
 allow {
