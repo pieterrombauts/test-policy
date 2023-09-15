@@ -14,7 +14,9 @@ decision = {
     "resources": accessible_assets
 }
 
-decision_code = 200 { asset_in_accessible_assets }
+decision_code = 200 { permit_decision == true }
+decision_code = 403 { permit_decision == false }
+
 permit_decision = true { asset_in_accessible_assets }
 permit_decision = false { not asset_in_accessible_assets }
 
@@ -25,8 +27,8 @@ asset_in_accessible_assets {
 }
 
 # Set reason message based on permit_decision
-reason_msg = "" { asset_in_accessible_assets }
-reason_msg = "User does not have permission to view this asset" { not asset_in_accessible_assets }
+reason_msg = "" { permit_decision == true }
+reason_msg = "User does not have permission to view this asset" { permit_decision == false }
 
 # Helper rule to provide asset_ids that a given userId can access based on permissions
 user_readable_asset_ids[assetId] {
@@ -48,10 +50,4 @@ accessible_assets = output {
     user_assets := { a | a = user_readable_asset_ids[_]}
     pub_assets := { a | a = publicly_visible_asset_ids[_]}
     output := user_assets | pub_assets
-}
-
-# Main rule to allow access if assetId exists either in user_readable_asset_ids 
-# or in publicly_visible_asset_ids
-permit_decision = true {
-    input.assetId = accessible_assets[_]
 }
