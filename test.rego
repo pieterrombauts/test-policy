@@ -1,6 +1,29 @@
 package scepter.satellite
 
-default allow = false
+default decision = {
+    "permit": false,
+    "reason": "Forbidden",
+    "resources": set()
+}
+
+decision = {
+    "permit": permit_decision,
+    "reason": reason_msg,
+    "resources": accessible_assets
+}
+
+permit_decision = true { asset_in_accessible_assets } 
+permit_decision = false { not asset_in_accessible_assets } 
+
+# Rule to check if the assetId exists in accessible_assets
+asset_in_accessible_assets {
+    some_asset_in_set := accessible_assets[_]
+    some_asset_in_set == input.assetId
+}
+
+# Set reason message based on permit_decision
+reason_msg = "" { asset_in_accessible_assets }
+reason_msg = "User does not have permission to view this asset" { not asset_in_accessible_assets }
 
 # Helper rule to provide asset_ids that a given userId can access based on permissions
 user_readable_asset_ids[assetId] {
@@ -18,18 +41,14 @@ publicly_visible_asset_ids[assetId] {
 }
 
 # Helper rule to provide all assets accessible to a user (merged set of user_readable and publicly visible assets)
-accessible_assets[assetId] {
-    assetId = user_readable_asset_ids[_]
-}
-
-accessible_assets[assetId] {
-    assetId = publicly_visible_asset_ids[_]
+accessible_assets = output {
+    user_assets := { a | a = user_readable_asset_ids[_]}
+    pub_assets := { a | a = publicly_visible_asset_ids[_]}
+    output := user_assets | pub_assets
 }
 
 # Main rule to allow access if assetId exists either in user_readable_asset_ids 
 # or in publicly_visible_asset_ids
-allow {
-    input.assetId = user_readable_asset_ids[_]
-} else {
-    input.assetId = publicly_visible_asset_ids[_]
+permit_decision = true {
+    input.assetId = accessible_assets[_]
 }
