@@ -48,14 +48,10 @@ user_account_roles := { accountId: roles |
     ]
 }
 
-
-
-
-
 # Helper rule to provide asset_ids that a given userId can access based on permissions
 user_readable_asset_ids[assetId] {
     perm := data.permissions[_]
-    perm.user_uuid == input.userId
+    perm.role == user_account_roles[perm.account_id][_]
     perm.read_access == true
     assetId := perm.asset_id
 }
