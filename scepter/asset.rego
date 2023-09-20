@@ -33,5 +33,5 @@ decision := {
     "reason": "User does not have read permission on this asset.",
 } {
     input.action == "read"
-    input.asset_id not in readable_assets
+    not input.asset_id in readable_assets
 }
