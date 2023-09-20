@@ -4,7 +4,7 @@ package scepter.asset
 import future.keywords.in
 import data.scepter.readable_assets
 
-default decision = {
+default decision := {
     "permit": false,
     "code": 403,
     "reason": "Forbidden",
