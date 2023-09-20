@@ -6,7 +6,7 @@ import data.utils.siam.user_roles
 readable_user_assets := { user_id: permissible_assets |
     user_id := data.users[_]._id
     user_account_roles := user_roles[user_id]
-    permissible_assets := [ asset |
+    permissible_assets := { asset |
        some account_id
        role := user_account_roles[account_id][_]
        perm := data.permissions[_]
@@ -14,13 +14,13 @@ readable_user_assets := { user_id: permissible_assets |
        perm.role == role
        perm.read_access == true
        asset := perm.asset_id
-   ] | publicly_visible_assets
+   } | publicly_visible_assets
 }
 
 commandable_user_assets := { user_id: permissible_assets |
     user_id := data.users[_]._id
     user_account_roles := user_roles[user_id]
-    permissible_assets := [ asset |
+    permissible_assets := { asset |
        some account_id
        role := user_account_roles[account_id][_]
        perm := data.permissions[_]
@@ -28,13 +28,13 @@ commandable_user_assets := { user_id: permissible_assets |
        perm.role == role
        perm.command_access == true
        asset := perm.asset_id
-   ]
+   }
 }
 
 manageable_user_assets := { user_id: permissible_assets |
     user_id := data.users[_]._id
     user_account_roles := user_roles[user_id]
-    permissible_assets := [ asset |
+    permissible_assets := { asset |
        some account_id
        role := user_account_roles[account_id][_]
        perm := data.permissions[_]
@@ -42,7 +42,7 @@ manageable_user_assets := { user_id: permissible_assets |
        perm.role == role
        perm.manage_access == true
        asset := perm.asset_id
-   ]
+    }
 }
 
 # Helper rule to provide asset_ids that are publicly visible

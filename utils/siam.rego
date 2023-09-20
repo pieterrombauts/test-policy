@@ -7,11 +7,11 @@ user_roles := { user_id: account_roles |
         membership := data.memberships[_]
         membership.user_id == user_id
         account_id := membership.account_id
-        roles := [ role |
+        roles := { role |
             m := data.memberships[_]
             m.user_id == user_id
             m.account_id == account_id
             role := m.role
-        ]
+        }
     }
 }
