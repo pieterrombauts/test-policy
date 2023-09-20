@@ -26,12 +26,3 @@ decision := {
     input.action == "read"
     input.asset_id in readable_assets
 }
-
-decision := {
-    "permit": false,
-    "code": 403,
-    "reason": "User does not have read permission on this asset.",
-} {
-    input.action == "read"
-    not input.asset_id in readable_assets
-}
