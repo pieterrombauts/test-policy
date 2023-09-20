@@ -5,7 +5,7 @@ import data.utils.siam.user_roles
 # Utility to fetch current readable assets based on user roles
 user_assets := { user_id: permissible_assets |
     user_id := data.users[_]._id
-    user_account_roles := user_roles[input.user_id]
+    user_account_roles := user_roles[user_id]
     permissible_assets := { permission_level: assets |
         permission_level := ["read_access", "command_access", "manage_access"][_]
 
