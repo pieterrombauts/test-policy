@@ -11,8 +11,11 @@ user_assets := { user_id: permissible_assets |
 
         assets := [ asset |
             some account_id
-            role := user_account_roles[account_id][_]
 
+            role := user_account_roles[account_id][_]
+            print("found user", user_id)
+            print("found account", account_id)
+            print("found role", role)
             perm := data.permissions[_]
             perm.account_id == account_id
             perm.role == role
