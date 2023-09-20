@@ -44,3 +44,10 @@ manageable_user_assets := { user_id: permissible_assets |
        asset := perm.asset_id
    ]
 }
+
+# Helper rule to provide asset_ids that are publicly visible
+publicly_visible_assets[assetId] {
+    asset := data.assets[_]
+    asset.publicly_visible == true
+    assetId := asset._id
+}
