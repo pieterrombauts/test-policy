@@ -14,7 +14,7 @@ readable_user_assets := { user_id: permissible_assets |
        perm.role == role
        perm.read_access == true
        asset := perm.asset_id
-   ]
+   ] | publicly_visible_assets
 }
 
 commandable_user_assets := { user_id: permissible_assets |
